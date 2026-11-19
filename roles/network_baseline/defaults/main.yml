@@ -1,0 +1,14 @@
+---
+# Default variables for network_baseline role
+# These can be overridden in group_vars or host_vars
+
+ntp_servers:
+  - 1.1.1.1
+  - 8.8.8.8
+
+login_banner: |
+  Unauthorized access is prohibited.
+  This system is monitored.
+
+enforce_banner: true
+enforce_ntp: true

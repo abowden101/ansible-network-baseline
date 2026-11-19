@@ -1,0 +1,36 @@
+---
+- name: Basic network compliance checks
+  hosts: cisco
+  gather_facts: false
+
+  tasks:
+    - name: Gather device facts
+      cisco.ios.ios_facts:
+        gather_subset:
+          - min
+      register: facts
+
+    - name: Check if login banner is present
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include banner login
+      register: banner_check
+
+    - name: Report banner status
+      debug:
+        msg: |
+          Device: {{ inventory_hostname }}
+          Banner configured: {{ 'Yes' if banner_check.stdout[0] | length > 0 else 'No' }}
+
+    - name: Check NTP configuration
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include ntp server
+      register: ntp_check
+
+    - name: Report NTP status
+      debug:
+        msg: |
+          Device: {{ inventory_hostname }}
+          NTP servers found:
+          {{ ntp_check.stdout[0] | default('None configured') }}

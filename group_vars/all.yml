@@ -1,0 +1,16 @@
+---
+# Shared variables for network baseline
+
+ntp_servers:
+  - 1.1.1.1
+  - 8.8.8.8
+
+login_banner: |
+  *****************************************************************
+  *                    AUTHORIZED ACCESS ONLY                     *
+  *  This system is monitored. Unauthorized access is prohibited. *
+  *****************************************************************
+
+# Optional: set to true if you want to enforce banner on every run
+enforce_banner: true
+enforce_ntp: true

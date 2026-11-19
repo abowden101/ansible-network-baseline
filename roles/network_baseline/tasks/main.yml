@@ -1,0 +1,33 @@
+---
+# Network Baseline Role
+# Applies common hardening / consistency settings
+
+- name: Set login banner
+  cisco.ios.ios_banner:
+    banner: login
+    text: "{{ login_banner }}"
+  when: enforce_banner | bool
+  tags:
+    - banner
+    - baseline
+
+- name: Ensure desired NTP servers are configured
+  cisco.ios.ios_ntp_global:
+    servers:
+      - server: "{{ item }}"
+  loop: "{{ ntp_servers }}"
+  when: enforce_ntp | bool
+  tags:
+    - ntp
+    - baseline
+
+- name: Gather current NTP configuration (for verification)
+  cisco.ios.ios_command:
+    commands:
+      - show ntp status
+      - show ntp associations
+  register: ntp_status
+  tags:
+    - ntp
+    - verify
+  ignore_errors: true

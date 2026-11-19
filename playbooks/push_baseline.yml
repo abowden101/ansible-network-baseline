@@ -1,0 +1,9 @@
+---
+- name: Push network baseline configuration
+  hosts: cisco
+  gather_facts: false
+
+  roles:
+    - role: network_baseline
+      tags:
+        - baseline
